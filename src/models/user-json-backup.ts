@@ -9,6 +9,6 @@ const userJsonBackup = new mongoose.Schema(
   { versionKey: false, timestamps: true }
 );
 
-const Backup = mongoose.model("UserJsonBackup", userJsonBackup);
+const UserJsonBackup = mongoose.model("UserJsonBackup", userJsonBackup);
 
-export default Backup;
+export default UserJsonBackup;
