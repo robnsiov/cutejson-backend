@@ -5,4 +5,9 @@ const createUserValidation = z.object({
   email: z.string().email(),
 });
 
-export { createUserValidation };
+const userSigninValidation = z.object({
+  password: z.string().min(8).max(64),
+  email: z.string().email(),
+});
+
+export { createUserValidation, userSigninValidation };
