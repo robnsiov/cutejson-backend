@@ -1,11 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
 import userRouter from "./routers/user";
 import errorMessage from "./utils/error-message";
+import jsonDBRouter from "./routers/json-db";
 
 const app = express();
 app.use(express.json({ limit: "1mb" }));
 
 app.use("/user", userRouter);
+app.use("/db", jsonDBRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   return res.status(400).json(errorMessage("Bad request (processing)."));
