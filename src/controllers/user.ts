@@ -132,4 +132,28 @@ const userForgotPassConfirmation = async (
   }
 };
 
-export { userSignup, userSignin, userForgotPass, userForgotPassConfirmation };
+const userInfo = (req: Request, res: Response) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null)
+    return res.status(401).json(errorMessage("Token not found."));
+
+  jwt.verify(token, process.env.TOKEN_SECRET!, async (err, jwtUser: any) => {
+    if (err)
+      return res
+        .status(403)
+        .json(errorMessage("Token has expired or it's wrong."));
+
+    const user = await User.findOne({ _id: jwtUser.id });
+    if (user) return res.json({ db: user.db, email: user.email });
+    return res.status(400).json(errorMessage("User does not exist."));
+  });
+};
+
+export {
+  userSignup,
+  userSignin,
+  userForgotPass,
+  userForgotPassConfirmation,
+  userInfo,
+};
