@@ -1,13 +1,19 @@
 import { NextFunction, Request, Response } from "express";
 import {
   createUserValidation,
+  userForgotPassValidation,
   userSigninValidation,
 } from "../validations/user";
 import jwt from "jsonwebtoken";
 import argon2 from "argon2";
 import errorMessage from "../utils/error-message";
-import { UserSigninBody, UserSignupBody } from "../types/user";
+import {
+  UserForgotPassBody,
+  UserSigninBody,
+  UserSignupBody,
+} from "../types/user";
 import User from "../models/user";
+import createRandomString from "../utils/random-string";
 
 const userSignup = async (
   req: Request<{}, {}, UserSignupBody>,
@@ -63,4 +69,26 @@ const userSignin = async (
   }
 };
 
-export { userSignup, userSignin };
+const userForgotPass = async (
+  req: Request<{}, {}, UserForgotPassBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.body;
+    const data = await userForgotPassValidation.parseAsync({ email });
+    const user = await User.findOne({ email: data.email });
+    if (!user) return res.status(400).json(errorMessage("Bad request."));
+    user.forgotPass = createRandomString(36);
+    const now = new Date();
+    user.forgotPassexpiration = new Date(now.getTime() + 5 * 60000);
+    await user.save();
+    // send email
+    res.json({ status: "recovery cade has sent." });
+  } catch (err: any) {
+    if (err.issues) res.status(400).json(errorMessage(err.issues));
+    else next(err);
+  }
+};
+
+export { userSignup, userSignin, userForgotPass };

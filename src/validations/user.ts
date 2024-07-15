@@ -10,4 +10,8 @@ const userSigninValidation = z.object({
   email: z.string().email(),
 });
 
-export { createUserValidation, userSigninValidation };
+const userForgotPassValidation = z.object({
+  email: z.string().email(),
+});
+
+export { createUserValidation, userSigninValidation, userForgotPassValidation };

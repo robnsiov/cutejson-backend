@@ -11,6 +11,8 @@ const user = new mongoose.Schema(
       type: String,
       required: true,
     },
+    forgotPass: String,
+    forgotPassexpiration: Date,
     json: {
       type: mongoose.Schema.Types.Mixed,
       default: {},
