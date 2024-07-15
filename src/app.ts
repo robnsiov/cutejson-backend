@@ -1,9 +1,18 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import userRouter from "./routers/user";
+import errorMessage from "./utils/error-message";
 
 const app = express();
 app.use(express.json({ limit: "1mb" }));
 
 app.use("/user", userRouter);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  return res.status(400).json(errorMessage("Bad request (processing)."));
+});
+
+app.use((req: Request, res: Response) =>
+  res.status(404).json(errorMessage("Bad path."))
+);
 
 export default app;
