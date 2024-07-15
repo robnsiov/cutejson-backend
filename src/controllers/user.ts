@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import {
   createUserValidation,
+  userForgotPassConfirmationValidation,
   userForgotPassValidation,
   userSigninValidation,
 } from "../validations/user";
@@ -91,4 +92,44 @@ const userForgotPass = async (
   }
 };
 
-export { userSignup, userSignin, userForgotPass };
+const userForgotPassConfirmation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { recoveryString, password, confirmPassword } = req.body;
+  try {
+    const data = await userForgotPassConfirmationValidation.parseAsync({
+      recoveryString,
+      confirmPassword,
+      password,
+    });
+    const user = await User.findOne({ forgotPass: data.recoveryString });
+
+    if (!user) return res.status(400).json(errorMessage("Bad request."));
+
+    const now = new Date();
+    if (
+      user.forgotPassexpiration &&
+      now.getTime() > user.forgotPassexpiration.getTime()
+    ) {
+      user.forgotPass = null;
+      user.forgotPassexpiration = null;
+      await user.save();
+
+      return res.status(400).json(errorMessage("Your request has Expired."));
+    }
+
+    const hash = await argon2.hash(password);
+    user.password = hash;
+    user.forgotPass = null;
+    user.forgotPassexpiration = null;
+    await user.save();
+    res.json({});
+  } catch (err: any) {
+    if (err.issues) res.status(400).json(errorMessage(err.issues));
+    else next(err);
+  }
+};
+
+export { userSignup, userSignin, userForgotPass, userForgotPassConfirmation };
