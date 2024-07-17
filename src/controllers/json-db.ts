@@ -5,11 +5,12 @@ import defaultData from "../utils/json-db-default";
 import isObject from "../utils/is-object";
 import errorMessage from "../utils/error-message";
 import { cloneDeep } from "lodash";
+import { createUserBackup } from "./user-json-backup";
 
-const createDatabase = async (req: Request, res: Response) => {
+const createJsonDB = async (req: Request, res: Response) => {
   const randomNumer = createRandomString(36);
   await User.create({ db: randomNumer, json: defaultData });
-  //   await createUserBackup(randomNumer);
+  await createUserBackup(randomNumer);
   res.status(201).send({ db: randomNumer });
 };
 
@@ -77,7 +78,7 @@ const putDataByKey = async (req: Request, res: Response) => {
 export {
   readDatabase,
   editDatabase,
-  createDatabase,
+  createJsonDB,
   getDataByKey,
   deleteDataByKey,
   clearDatabase,
