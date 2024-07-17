@@ -2,11 +2,17 @@ import mongoose from "mongoose";
 
 const userJsonBackup = new mongoose.Schema(
   {
-    db: String,
-    write: Number,
+    db: {
+      type: String,
+      required: true,
+    },
+    write: {
+      type: Number,
+      required: true,
+    },
     content: [{ date: Date, data: {} }],
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true, minimize: false }
 );
 
 const UserJsonBackup = mongoose.model("UserJsonBackup", userJsonBackup);

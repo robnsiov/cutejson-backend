@@ -2,10 +2,10 @@ import express from "express";
 import {
   editDatabase,
   readDatabase,
-  createDatabase,
+  createJsonDB,
   getDataByKey,
   deleteDataByKey,
-  clearDatabase,
+  clearJsonDB,
   postDataByKey,
   patchDataByKey,
   putDataByKey,
@@ -15,14 +15,10 @@ import asyncHandler from "../utils/async-handler";
 
 const jsonDBRouter = express.Router();
 
-jsonDBRouter.post("/", asyncHandler(createDatabase));
+jsonDBRouter.post("/", asyncHandler(createJsonDB));
 jsonDBRouter.put("/:db", asyncHandler(DBIsExist), asyncHandler(editDatabase));
 jsonDBRouter.get("/:db", asyncHandler(DBIsExist), asyncHandler(readDatabase));
-jsonDBRouter.delete(
-  "/:db",
-  asyncHandler(DBIsExist),
-  asyncHandler(clearDatabase)
-);
+jsonDBRouter.delete("/:db", asyncHandler(DBIsExist), asyncHandler(clearJsonDB));
 jsonDBRouter.get(
   "/:db/:key",
   asyncHandler(DBIsExist),

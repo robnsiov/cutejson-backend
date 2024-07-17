@@ -12,6 +12,7 @@ app.use("/db", jsonDBRouter);
 app.use("/backup", userJsonBackupRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  console.log(err);
   return res.status(400).json(errorMessage("Bad request (processing)."));
 });
 

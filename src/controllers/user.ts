@@ -53,7 +53,7 @@ const userSignin = async (
     if (!user) return res.status(400).json(errorMessage("Wrong inputs."));
 
     try {
-      if (await argon2.verify(user.password, password)) {
+      if (await argon2.verify(user.password!, password)) {
         const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET!, {
           expiresIn: process.env.JWT_EXPIRES,
         });
