@@ -60,4 +60,4 @@ const updateUserBackup = async (db: string, data: any) => {
   }
 };
 
-export { userBackups, getUserBackupByDate, createUserBackup };
+export { userBackups, getUserBackupByDate, createUserBackup, updateUserBackup };

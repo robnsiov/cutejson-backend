@@ -12,7 +12,7 @@ const userJsonBackup = new mongoose.Schema(
     },
     content: [{ date: Date, data: {} }],
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true, minimize: false }
 );
 
 const UserJsonBackup = mongoose.model("UserJsonBackup", userJsonBackup);
