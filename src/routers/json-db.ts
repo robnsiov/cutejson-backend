@@ -1,7 +1,7 @@
 import express from "express";
 import {
   editDatabase,
-  readDatabase,
+  readJsonDB,
   createJsonDB,
   getDataByKey,
   deleteDataByKey,
@@ -17,7 +17,7 @@ const jsonDBRouter = express.Router();
 
 jsonDBRouter.post("/", asyncHandler(createJsonDB));
 jsonDBRouter.put("/:db", asyncHandler(DBIsExist), asyncHandler(editDatabase));
-jsonDBRouter.get("/:db", asyncHandler(DBIsExist), asyncHandler(readDatabase));
+jsonDBRouter.get("/:db", asyncHandler(DBIsExist), asyncHandler(readJsonDB));
 jsonDBRouter.delete("/:db", asyncHandler(DBIsExist), asyncHandler(clearJsonDB));
 jsonDBRouter.get(
   "/:db/:key",

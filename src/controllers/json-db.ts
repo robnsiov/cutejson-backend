@@ -14,7 +14,7 @@ const createJsonDB = async (req: Request, res: Response) => {
   res.status(201).send({ db: randomNumer });
 };
 
-const readDatabase = async (req: Request, res: Response) => {
+const readJsonDB = async (req: Request, res: Response) => {
   const user = req.user;
   res.json(user.json);
 };
@@ -76,7 +76,7 @@ const putDataByKey = async (req: Request, res: Response) => {
 };
 
 export {
-  readDatabase,
+  readJsonDB,
   editDatabase,
   createJsonDB,
   getDataByKey,
