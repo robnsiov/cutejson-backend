@@ -6,7 +6,7 @@ import {
   getKeyOfJsonDB,
   deleteKeyOfJsonDB,
   clearJsonDB,
-  postDataByKey,
+  postKeyOfJsonDB,
   patchDataByKey,
   putDataByKey,
 } from "../controllers/json-db.js";
@@ -32,7 +32,7 @@ jsonDBRouter.delete(
 jsonDBRouter.post(
   "/:db/:key",
   asyncHandler(DBIsExist),
-  asyncHandler(postDataByKey)
+  asyncHandler(postKeyOfJsonDB)
 );
 jsonDBRouter.patch(
   "/:db/:key",

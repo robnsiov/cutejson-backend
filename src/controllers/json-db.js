@@ -109,7 +109,7 @@ const deleteKeyOfJsonDB = async (req, res) => {
   }
 };
 
-const postDataByKey = async (req, res) => {
+const postKeyOfJsonDB = async (req, res) => {
   const user = req.user;
   const json = lodash.cloneDeep(user.json);
   const { key } = req.params;
@@ -151,7 +151,7 @@ export {
   getKeyOfJsonDB,
   deleteKeyOfJsonDB,
   clearJsonDB,
-  postDataByKey,
+  postKeyOfJsonDB,
   patchDataByKey,
   putDataByKey,
 };
