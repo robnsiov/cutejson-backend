@@ -19,7 +19,7 @@ const readJsonDB = async (req: Request, res: Response) => {
   res.json(user.json);
 };
 
-const editDatabase = async (req: Request, res: Response) => {
+const editJsonDB = async (req: Request, res: Response) => {
   const body = req.body;
   if (!isObject(body))
     return res
@@ -30,7 +30,7 @@ const editDatabase = async (req: Request, res: Response) => {
   user.json = req.body;
   await user.save();
 
-  //   await updateUserBackup(req.params.db, body);
+  await updateUserBackup(req.params.db, body);
   res.json(body);
 };
 
@@ -77,7 +77,7 @@ const putDataByKey = async (req: Request, res: Response) => {
 
 export {
   readJsonDB,
-  editDatabase,
+  editJsonDB,
   createJsonDB,
   getDataByKey,
   deleteDataByKey,
