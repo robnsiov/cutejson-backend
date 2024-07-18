@@ -4,7 +4,7 @@ import {
   readJsonDB,
   createJsonDB,
   getKeyOfJsonDB,
-  deleteDataByKey,
+  deleteKeyOfJsonDB,
   clearJsonDB,
   postDataByKey,
   patchDataByKey,
@@ -27,7 +27,7 @@ jsonDBRouter.get(
 jsonDBRouter.delete(
   "/:db/:key",
   asyncHandler(DBIsExist),
-  asyncHandler(deleteDataByKey)
+  asyncHandler(deleteKeyOfJsonDB)
 );
 jsonDBRouter.post(
   "/:db/:key",
