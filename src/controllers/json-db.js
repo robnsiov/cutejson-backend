@@ -111,9 +111,22 @@ const deleteKeyOfJsonDB = async (req, res) => {
 
 const postDataByKey = async (req, res) => {
   const user = req.user;
-  const json = cloneDeep(user.json);
-  //   await updateUserBackup(req.params.db, json);
-  res.status(201).json({});
+  const json = lodash.cloneDeep(user.json);
+  const { key } = req.params;
+  if (req.query.replace === "true") {
+    json[key] = req.body;
+  } else {
+    if (Array.isArray(json[key])) {
+      json[key].push(req.body);
+    } else json[key] = req.body;
+  }
+  user.json = json;
+  await user.save();
+  await updateUserBackup(req.params.db, json);
+  res.status(201).json(json);
+  // if key was undifiend => create a key with data
+  // if body was aaray => push data in body
+  // if replace=true => put data in value of key
 };
 
 const patchDataByKey = async (req, res) => {
