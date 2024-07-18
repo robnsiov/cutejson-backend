@@ -3,7 +3,7 @@ import {
   editJsonDB,
   readJsonDB,
   createJsonDB,
-  getDataByKey,
+  getKeyOfJsonDB,
   deleteDataByKey,
   clearJsonDB,
   postDataByKey,
@@ -22,7 +22,7 @@ jsonDBRouter.delete("/:db", asyncHandler(DBIsExist), asyncHandler(clearJsonDB));
 jsonDBRouter.get(
   "/:db/:key",
   asyncHandler(DBIsExist),
-  asyncHandler(getDataByKey)
+  asyncHandler(getKeyOfJsonDB)
 );
 jsonDBRouter.delete(
   "/:db/:key",
