@@ -1,13 +1,13 @@
 import express from "express";
-import asyncHandler from "../utils/async-handler";
+import asyncHandler from "../utils/async-handler.js";
 import {
   userForgotPass,
   userForgotPassConfirmation,
   userInfo,
   userSignin,
   userSignup,
-} from "../controllers/user";
-import DBIsExist from "../middlewares/db-is-exist";
+} from "../controllers/user.js";
+import DBIsExist from "../middlewares/db-is-exist.js";
 
 const userRouter = express.Router();
 
