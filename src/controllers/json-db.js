@@ -5,7 +5,7 @@ import isObject from "../utils/is-object.js";
 import errorMessage from "../utils/error-message.js";
 import lodash from "lodash";
 import { createUserBackup, updateUserBackup } from "./user-json-backup.js";
-import Query from "../utils/query.js";
+import filterByQuery from "../utils/filter-by-query.js";
 
 const createJsonDB = async (req, res) => {
   const randomNumer = createRandomString(36);
@@ -46,35 +46,13 @@ const getKeyOfJsonDB = async (req, res) => {
   const { key } = req.params;
   const user = req.user;
   const data = user.json[key];
-  if (Array.isArray(data)) {
-    const query = req.query;
-    if (!lodash.isEmpty(query)) {
-      const parsedQuery = {};
-      Object.entries(query).forEach(([key, value]) => {
-        parsedQuery[key] = `${value}`.includes(",")
-          ? `${value}`.split(",")
-          : value;
-      });
-      const querKey = parsedQuery.query;
-      const q = new Query(data, querKey);
-      try {
-        Object.entries(parsedQuery).forEach(([key, value]) => {
-          if (key === "noSelect") {
-            if (Array.isArray(value)) q[key](value);
-            else q[key]([value]);
-          } else {
-            if (Array.isArray(value)) q[key](value[0], value[1]);
-            else q[key](value);
-          }
-        });
-      } catch (err) {}
-
-      res.json([]);
-    } else res.json(data);
-  } else {
-    if (data == null) res.json(null);
-    else res.json(data);
-  }
+  const queryStatus = filterByQuery(data, req.query);
+  if (queryStatus.status === "return data") res.json(data);
+  else if (queryStatus.status === "return filtered")
+    res.json(queryStatus.filtered);
+  else if (queryStatus.status === "return null") res.json(null);
+  else if (queryStatus.status === "return error")
+    res.status(400).json(errorMessage(queryStatus.error));
 };
 
 const deleteDataByKey = async (req, res) => {
