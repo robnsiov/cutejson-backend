@@ -9,9 +9,9 @@ import {
   postDataByKey,
   patchDataByKey,
   putDataByKey,
-} from "../controllers/json-db";
-import DBIsExist from "../middlewares/db-is-exist";
-import asyncHandler from "../utils/async-handler";
+} from "../controllers/json-db.js";
+import DBIsExist from "../middlewares/db-is-exist.js";
+import asyncHandler from "../utils/async-handler.js";
 
 const jsonDBRouter = express.Router();
 

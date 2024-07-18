@@ -1,4 +1,4 @@
-const errorMessage = (message: string) => {
+const errorMessage = (message) => {
   return { message };
 };
 

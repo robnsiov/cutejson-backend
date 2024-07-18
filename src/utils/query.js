@@ -2,42 +2,42 @@ import { getProperty, setProperty, deleteProperty } from "dot-prop";
 import sortOn from "sort-on";
 
 class Query {
-  query: any = null;
-  filtered: Array<any> = [];
-  constructor(array: Array<any>, query?: string) {
+  query = null;
+  filtered = [];
+  constructor(array, query) {
     this.filtered = array;
     this.query = query;
   }
-  startsWith(value: string, q?: string) {
+  startsWith(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter((item) =>
-      (getProperty(item, this.query) as string).startsWith(value)
+      getProperty(item, this.query).startsWith(value)
     );
     return this;
   }
 
-  endsWith(value: string, q?: string) {
+  endsWith(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter((item) =>
-      (getProperty(item, this.query) as string).endsWith(value)
+      getProperty(item, this.query).endsWith(value)
     );
     return this;
   }
-  strictEqual(value: string, q?: string) {
+  strictEqual(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
       (item) => getProperty(item, this.query) === value
     );
     return this;
   }
-  equal(value: string, q?: string) {
+  equal(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
       (item) => getProperty(item, this.query) == value
     );
     return this;
   }
-  strictNotEqual(value: string, q?: string) {
+  strictNotEqual(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
       (item) => getProperty(item, this.query) !== value
@@ -45,7 +45,7 @@ class Query {
     return this;
   }
 
-  notEqual(value: string, q?: string) {
+  notEqual(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
       (item) => getProperty(item, this.query) != value
@@ -56,68 +56,68 @@ class Query {
     this.filtered = this.filtered.slice(offset, offset + limit);
     return this;
   }
-  sort(q: string) {
+  sort(q) {
     this.filtered = sortOn(this.filtered, q);
     return this;
   }
 
-  gt(value: string, q?: string) {
+  gt(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
-      (item) => (getProperty(item, this.query) as number) > +value
+      (item) => getProperty(item, this.query) > +value
     );
     return this;
   }
-  gte(value: string, q?: string) {
+  gte(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
-      (item) => (getProperty(item, this.query) as number) >= +value
+      (item) => getProperty(item, this.query) >= +value
     );
     return this;
   }
-  lt(value: string, q?: number) {
+  lt(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
-      (item) => (getProperty(item, this.query) as number) < +value
+      (item) => getProperty(item, this.query) < +value
     );
     return this;
   }
-  lte(value: string, q?: string) {
+  lte(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
-      (item) => (getProperty(item, this.query) as number) <= +value
+      (item) => getProperty(item, this.query) <= +value
     );
     return this;
   }
-  contains(value: string, q?: string) {
+  contains(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter((item) =>
-      (getProperty(item, this.query) as string).includes(value)
+      getProperty(item, this.query).includes(value)
     );
     return this;
   }
-  notContains(value: string, q?: string) {
+  notContains(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
-      (item) => !(getProperty(item, this.query) as string).includes(value)
+      (item) => !getProperty(item, this.query).includes(value)
     );
     return this;
   }
-  length(value: string, q?: string) {
+  length(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter(
-      (item) => (getProperty(item, this.query) as any).length == value
+      (item) => getProperty(item, this.query).length == value
     );
     return this;
   }
-  regex(value: string, q?: string) {
+  regex(value, q) {
     if (q) this.query = q;
     this.filtered = this.filtered.filter((item) =>
-      (getProperty(item, this.query) as string).match(value)
+      getProperty(item, this.query).match(value)
     );
     return this;
   }
-  noSelect(values: Array<string>) {
+  noSelect(values) {
     this.filtered.forEach((_, i) => {
       values.forEach((value) => {
         deleteProperty(this.filtered[i], value);
@@ -125,7 +125,7 @@ class Query {
     });
     return this;
   }
-  populate(q: string, table: Array<any>, nextQ: string) {
+  populate(q, table, nextQ) {
     if (q) this.query = q;
     this.filtered.forEach((item) => {
       const prp = getProperty(item, this.query);

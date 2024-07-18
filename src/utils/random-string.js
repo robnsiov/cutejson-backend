@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-function createRandomString(length: number) {
+function createRandomString(length) {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
