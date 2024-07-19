@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/lodash": "^4.17.6",
     "argon2": "^0.40.3",
     "dot-prop": "^9.0.0",

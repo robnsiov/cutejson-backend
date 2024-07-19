@@ -7,6 +7,7 @@ import lodash from "lodash";
 import { createUserBackup, updateUserBackup } from "./user-json-backup.js";
 import filterByQuery from "../utils/filter-by-query.js";
 import { deleteProperty } from "dot-prop";
+import ERROR_MESSAGES from "../../constants/errors.js";
 
 const createJsonDB = async (req, res) => {
   const randomNumer = createRandomString(36);
@@ -23,16 +24,14 @@ const readJsonDB = async (req, res) => {
 const editJsonDB = async (req, res) => {
   const body = req.body;
   if (!isObject(body))
-    return res
-      .status(400)
-      .send(errorMessage("Send an object not another data types."));
+    return res.status(400).send(errorMessage(ERROR_MESSAGES.ONLY_OBJECT));
 
   const user = req.user;
   user.json = req.body;
   await user.save();
 
   await updateUserBackup(req.params.db, body);
-  res.json(body);
+  res.status(201).json(body);
 };
 
 const clearJsonDB = async (req, res) => {
@@ -105,7 +104,7 @@ const deleteKeyOfJsonDB = async (req, res) => {
       await removeKey();
     }
   } else {
-    res.status(400).json(errorMessage(`${key} key is not in your DB!`));
+    res.status(404).json(errorMessage(`${key} key is not in your DB!`));
   }
 };
 
@@ -139,7 +138,7 @@ const putKeyOfJsonDB = async (req, res) => {
     user.json = json;
     await user.save();
     await updateUserBackup(req.params.db, json);
-    res.json(json);
+    res.status(201).json(json);
   };
 
   if (key in json) {
@@ -149,7 +148,7 @@ const putKeyOfJsonDB = async (req, res) => {
       } else {
         const queryStatus = filterByQuery(json[key], req.query);
         if (queryStatus.status === "return data") {
-          res.json(json);
+          res.status(201).json(json);
         } else if (queryStatus.status === "return filtered") {
           json[key].forEach((data, i) => {
             queryStatus.filtered.forEach((f) => {
@@ -161,7 +160,7 @@ const putKeyOfJsonDB = async (req, res) => {
           await updateKey();
         } else if (queryStatus.status === "return null") {
           // nothing for update
-          res.json(json);
+          res.status(201).json(json);
         } else if (queryStatus.status === "return error")
           res.status(400).json(errorMessage(queryStatus.error));
       }
@@ -169,7 +168,7 @@ const putKeyOfJsonDB = async (req, res) => {
       await updateKey();
     }
   } else {
-    res.status(400).json(errorMessage(`${key} key is not in your DB!`));
+    res.status(404).json(errorMessage(`${key} key is not in your DB!`));
   }
 };
 

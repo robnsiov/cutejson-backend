@@ -1,3 +1,4 @@
+import ERROR_MESSAGES from "../../constants/errors.js";
 import UserJsonBackup from "../models/user-json-backup.js";
 import errorMessage from "../utils/error-message.js";
 import defaultData from "../utils/json-db-default.js";
@@ -10,7 +11,7 @@ const userBackups = async (req, res) => {
     backup.content.forEach((bc) => dates.push(bc.date));
     return res.json(dates.sort((a, b) => a.getTime() - b.getTime()));
   }
-  return res.status(400).json(errorMessage("User backup not found."));
+  return res.status(404).json(errorMessage(ERROR_MESSAGES.BACKUP_NOT_FOUND));
 };
 
 const createUserBackup = async (db) => {
@@ -25,7 +26,8 @@ const createUserBackup = async (db) => {
 const getUserBackupByDate = async (req, res) => {
   const dateQ = parseInt(req.params.date);
 
-  if (isNaN(dateQ)) return res.status(400).json(errorMessage("Bad date."));
+  if (isNaN(dateQ))
+    return res.status(404).json(errorMessage(ERROR_MESSAGES.DATE_NOT_FOUND));
 
   const date = new Date(+dateQ);
 
@@ -41,7 +43,7 @@ const getUserBackupByDate = async (req, res) => {
   }
 
   if (selected) res.json(selected);
-  else res.status(400).json(errorMessage("Wrong date."));
+  else res.status(404).json(errorMessage(ERROR_MESSAGES.DATE_NOT_FOUND));
 };
 
 const MAX_BACKOUP_COUNT = 4;
