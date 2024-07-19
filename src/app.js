@@ -4,6 +4,7 @@ import errorMessage from "./utils/error-message.js";
 import jsonDBRouter from "./routers/json-db.js";
 import userJsonBackupRouter from "./routers/user-json-backup.js";
 import fakerRouter from "./routers/faker.js";
+import ERROR_MESSAGES from "../constants/errors.js";
 
 const app = express();
 
@@ -48,9 +49,11 @@ app.use("/backup", userJsonBackupRouter);
 app.use("/faker", fakerRouter);
 
 app.use((err, req, res, next) => {
-  return res.status(400).json(errorMessage("Bad request (processing)."));
+  return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));
 });
 
-app.use((req, res) => res.status(404).json(errorMessage("Bad path.")));
+app.use((req, res) =>
+  res.status(404).json(errorMessage(ERROR_MESSAGES.URL_DOES_NOT_EXIST))
+);
 
 export default app;

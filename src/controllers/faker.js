@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import errorMessage from "../utils/error-message.js";
+import ERROR_MESSAGES from "../../constants/errors.js";
 
 const createFakeData = (req, res) => {
   const { repeat } = req.query;
@@ -15,7 +16,7 @@ const createFakeData = (req, res) => {
     const rp = parseInt(repeat);
     if (!isNaN(rp)) {
       if (rp > 100)
-        return res.status(400).json(errorMessage("Max repeat is 100!"));
+        return res.status(400).json(errorMessage(ERROR_MESSAGES.MAX_REPEAT));
       Array.from({ length: rp }).forEach(() => {
         data.push(generateData());
       });
@@ -24,7 +25,7 @@ const createFakeData = (req, res) => {
     }
     res.status(201).json(data);
   } catch {
-    res.status(400).json(errorMessage("Invalid template!"));
+    res.status(400).json(errorMessage(ERROR_MESSAGES.INVALID_TEMPLATE));
   }
 };
 
