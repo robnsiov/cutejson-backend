@@ -129,19 +129,48 @@ const postKeyOfJsonDB = async (req, res) => {
   // if replace=true => put data in value of key
 };
 
-const patchDataByKey = async (req, res) => {
+const putKeyOfJsonDB = async (req, res) => {
   const user = req.user;
-  const json = cloneDeep(user.json);
+  const { key } = req.params;
 
-  //   await updateUserBackup(req.params.db, json);
-  return res.json({});
-};
-const putDataByKey = async (req, res) => {
-  const user = req.user;
-  const json = cloneDeep(user.json);
+  const json = lodash.cloneDeep(user.json);
 
-  //   await updateUserBackup(req.params.db, json);
-  return res.json({});
+  const updateKey = async () => {
+    user.json = json;
+    await user.save();
+    await updateUserBackup(req.params.db, json);
+    res.json(json);
+  };
+
+  if (key in json) {
+    if (Array.isArray(json[key])) {
+      if (lodash.isEmpty(req.query)) {
+        await updateKey();
+      } else {
+        const queryStatus = filterByQuery(json[key], req.query);
+        if (queryStatus.status === "return data") {
+          res.json(json);
+        } else if (queryStatus.status === "return filtered") {
+          json[key].forEach((data, i) => {
+            queryStatus.filtered.forEach((f) => {
+              if (JSON.stringify(f) === JSON.stringify(data)) {
+                json[key][i] = req.body;
+              }
+            });
+          });
+          await updateKey();
+        } else if (queryStatus.status === "return null") {
+          // nothing for update
+          res.json(json);
+        } else if (queryStatus.status === "return error")
+          res.status(400).json(errorMessage(queryStatus.error));
+      }
+    } else {
+      await updateKey();
+    }
+  } else {
+    res.status(400).json(errorMessage(`${key} key is not in your DB!`));
+  }
 };
 
 export {
@@ -152,6 +181,5 @@ export {
   deleteKeyOfJsonDB,
   clearJsonDB,
   postKeyOfJsonDB,
-  patchDataByKey,
-  putDataByKey,
+  putKeyOfJsonDB,
 };
