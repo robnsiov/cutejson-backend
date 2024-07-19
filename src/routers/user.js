@@ -11,7 +11,7 @@ import DBIsExist from "../middlewares/db-is-exist.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", asyncHandler(userInfo));
+userRouter.get("/", userInfo);
 
 userRouter.post(
   "/register/:db",

@@ -122,7 +122,14 @@ const userForgotPassConfirmation = async (req, res, next) => {
 
 const userInfo = (req, res) => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
+  if (!authHeader)
+    return res.status(401).json(errorMessage(ERROR_MESSAGES.TOKEN_NOT_FOUND));
+
+  if (!authHeader.startsWith(authHeader))
+    return res
+      .status(400)
+      .json(errorMessage(ERROR_MESSAGES.USE_BEARER_IN_TOKEN));
+  const token = authHeader.split(" ")[1];
   if (token == null)
     return res.status(401).json(errorMessage(ERROR_MESSAGES.TOKEN_NOT_FOUND));
 

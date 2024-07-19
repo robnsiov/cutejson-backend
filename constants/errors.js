@@ -11,8 +11,9 @@ const ERROR_MESSAGES = {
   USER_NOT_FOUND: "User not found!",
   EXPIRED_REQUEST: "Your request has expired!",
   TOKEN_NOT_FOUND: "Token not found!",
-  EXPIRED_OR_INVALID_TOKEN: "Token has expired or it's wrong!",
+  EXPIRED_OR_INVALID_TOKEN: "Token has expired or is incorrect",
   INCORRECT_JSON_KEY: "Json key is incorrect!",
+  USE_BEARER_IN_TOKEN: "Use Bearer in first of the token!",
 };
 
 export default ERROR_MESSAGES;
