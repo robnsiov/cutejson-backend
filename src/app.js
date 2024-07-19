@@ -3,6 +3,7 @@ import userRouter from "./routers/user.js";
 import errorMessage from "./utils/error-message.js";
 import jsonDBRouter from "./routers/json-db.js";
 import userJsonBackupRouter from "./routers/user-json-backup.js";
+import fakerRouter from "./routers/faker.js";
 
 const app = express();
 
@@ -44,9 +45,9 @@ app.use(flexibleBodyParser);
 app.use("/user", userRouter);
 app.use("/db", jsonDBRouter);
 app.use("/backup", userJsonBackupRouter);
+app.use("/faker", fakerRouter);
 
 app.use((err, req, res, next) => {
-  console.log(err);
   return res.status(400).json(errorMessage("Bad request (processing)."));
 });
 
