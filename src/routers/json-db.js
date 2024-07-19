@@ -4,11 +4,10 @@ import {
   readJsonDB,
   createJsonDB,
   getKeyOfJsonDB,
-  deleteDataByKey,
+  deleteKeyOfJsonDB,
   clearJsonDB,
-  postDataByKey,
-  patchDataByKey,
-  putDataByKey,
+  postKeyOfJsonDB,
+  putKeyOfJsonDB,
 } from "../controllers/json-db.js";
 import DBIsExist from "../middlewares/db-is-exist.js";
 import asyncHandler from "../utils/async-handler.js";
@@ -27,22 +26,18 @@ jsonDBRouter.get(
 jsonDBRouter.delete(
   "/:db/:key",
   asyncHandler(DBIsExist),
-  asyncHandler(deleteDataByKey)
+  asyncHandler(deleteKeyOfJsonDB)
 );
 jsonDBRouter.post(
   "/:db/:key",
   asyncHandler(DBIsExist),
-  asyncHandler(postDataByKey)
+  asyncHandler(postKeyOfJsonDB)
 );
-jsonDBRouter.patch(
-  "/:db/:key",
-  asyncHandler(DBIsExist),
-  asyncHandler(patchDataByKey)
-);
+
 jsonDBRouter.put(
   "/:db/:key",
   asyncHandler(DBIsExist),
-  asyncHandler(putDataByKey)
+  asyncHandler(putKeyOfJsonDB)
 );
 
 export default jsonDBRouter;

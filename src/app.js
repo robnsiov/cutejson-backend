@@ -5,7 +5,41 @@ import jsonDBRouter from "./routers/json-db.js";
 import userJsonBackupRouter from "./routers/user-json-backup.js";
 
 const app = express();
-app.use(express.json({ limit: "1mb" }));
+
+const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB in bytes
+const flexibleBodyParser = (req, res, next) => {
+  let data = "";
+  let dataSize = 0;
+
+  req.on("data", (chunk) => {
+    dataSize += chunk.length;
+    if (dataSize > MAX_BODY_SIZE) {
+      res.status(413).send("Payload Too Large");
+      req.connection.destroy();
+      return;
+    }
+    data += chunk;
+  });
+
+  req.on("end", () => {
+    if (data) {
+      try {
+        req.body = JSON.parse(data);
+      } catch (e) {
+        if (data === "null") {
+          req.body = null;
+        } else if (!isNaN(data)) {
+          req.body = Number(data);
+        } else {
+          return res.status(400).send("Invalid data format");
+        }
+      }
+    }
+    next();
+  });
+};
+
+app.use(flexibleBodyParser);
 
 app.use("/user", userRouter);
 app.use("/db", jsonDBRouter);
