@@ -6,6 +6,7 @@ import userJsonBackupRouter from "./routers/user-json-backup.js";
 import fakerRouter from "./routers/faker.js";
 import ERROR_MESSAGES from "../constants/errors.js";
 import { MAX_BODY_SIZE } from "../constants/index.js";
+import googleRouter from "./routers/google.js";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use("/user", userRouter);
 app.use("/db", jsonDBRouter);
 app.use("/backup", userJsonBackupRouter);
 app.use("/faker", fakerRouter);
+app.use("/auth/google", googleRouter);
 
 app.use((err, req, res, next) => {
   return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));

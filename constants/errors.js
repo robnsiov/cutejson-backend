@@ -14,6 +14,7 @@ const ERROR_MESSAGES = {
   EXPIRED_OR_INVALID_TOKEN: "Token has expired or is incorrect",
   INCORRECT_JSON_KEY: "Json key is incorrect!",
   USE_BEARER_IN_TOKEN: "Use Bearer in first of the token!",
+  AUTH_FAILED: "Authentication failed",
 };
 
 export default ERROR_MESSAGES;
