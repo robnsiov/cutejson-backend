@@ -5,10 +5,10 @@ import jsonDBRouter from "./routers/json-db.js";
 import userJsonBackupRouter from "./routers/user-json-backup.js";
 import fakerRouter from "./routers/faker.js";
 import ERROR_MESSAGES from "../constants/errors.js";
+import { MAX_BODY_SIZE } from "../constants/index.js";
 
 const app = express();
 
-const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB in bytes
 const flexibleBodyParser = (req, res, next) => {
   let data = "";
   let dataSize = 0;

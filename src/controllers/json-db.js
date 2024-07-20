@@ -1,6 +1,5 @@
 import createRandomString from "../utils/random-string.js";
 import User from "../models/user.js";
-import defaultData from "../utils/json-db-default.js";
 import isObject from "../utils/is-object.js";
 import errorMessage from "../utils/error-message.js";
 import lodash from "lodash";
@@ -8,10 +7,11 @@ import { createUserBackup, updateUserBackup } from "./user-json-backup.js";
 import filterByQuery from "../utils/filter-by-query.js";
 import { deleteProperty } from "dot-prop";
 import ERROR_MESSAGES from "../../constants/errors.js";
+import { DEFAULT_JSON_DB } from "../../constants/index.js";
 
 const createJsonDB = async (req, res) => {
   const randomNumer = createRandomString(36);
-  await User.create({ db: randomNumer, json: defaultData });
+  await User.create({ db: randomNumer, json: DEFAULT_JSON_DB });
   await createUserBackup(randomNumer);
   res.status(201).send({ db: randomNumer });
 };
