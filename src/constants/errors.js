@@ -12,8 +12,10 @@ const ERROR_MESSAGES = {
   EXPIRED_REQUEST: "Your request has expired!",
   TOKEN_NOT_FOUND: "Token not found!",
   EXPIRED_OR_INVALID_TOKEN: "Token has expired or is incorrect",
-  INCORRECT_JSON_KEY: "Json key is incorrect!",
+  INCORRECT_JSON_KEY: "Json token is incorrect!",
   USE_BEARER_IN_TOKEN: "Use Bearer in first of the token!",
+  AUTH_FAILED: "Authentication failed",
+  PUT_JSON_KEY_IN_HEADER: "Put your json token in the header!",
 };
 
 export default ERROR_MESSAGES;

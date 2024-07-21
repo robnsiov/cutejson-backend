@@ -4,49 +4,26 @@ import errorMessage from "./utils/error-message.js";
 import jsonDBRouter from "./routers/json-db.js";
 import userJsonBackupRouter from "./routers/user-json-backup.js";
 import fakerRouter from "./routers/faker.js";
-import ERROR_MESSAGES from "../constants/errors.js";
+import ERROR_MESSAGES from "./constants/errors.js";
+import { MAX_BODY_SIZE } from "./constants/index.js";
+import googleRouter from "./routers/google.js";
+import githubRouter from "./routers/github.js";
+import mongoSanitize from "express-mongo-sanitize";
+import cors from "cors";
+import flexibleBodyParser from "./middlewares/body-parser.js";
 
 const app = express();
-
-const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB in bytes
-const flexibleBodyParser = (req, res, next) => {
-  let data = "";
-  let dataSize = 0;
-
-  req.on("data", (chunk) => {
-    dataSize += chunk.length;
-    if (dataSize > MAX_BODY_SIZE) {
-      res.status(413).send("Payload Too Large");
-      req.connection.destroy();
-      return;
-    }
-    data += chunk;
-  });
-
-  req.on("end", () => {
-    if (data) {
-      try {
-        req.body = JSON.parse(data);
-      } catch (e) {
-        if (data === "null") {
-          req.body = null;
-        } else if (!isNaN(data)) {
-          req.body = Number(data);
-        } else {
-          return res.status(400).send("Invalid data format");
-        }
-      }
-    }
-    next();
-  });
-};
+app.use(cors());
 
 app.use(flexibleBodyParser);
+app.use(mongoSanitize());
 
 app.use("/user", userRouter);
 app.use("/db", jsonDBRouter);
 app.use("/backup", userJsonBackupRouter);
 app.use("/faker", fakerRouter);
+app.use("/auth/google", googleRouter);
+app.use("/auth/github", githubRouter);
 
 app.use((err, req, res, next) => {
   return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));

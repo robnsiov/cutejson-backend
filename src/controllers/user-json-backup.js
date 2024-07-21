@@ -1,7 +1,7 @@
-import ERROR_MESSAGES from "../../constants/errors.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
+import { DEFAULT_JSON_DB, MAX_BACKOUP_COUNT } from ".././constants/index.js";
 import UserJsonBackup from "../models/user-json-backup.js";
 import errorMessage from "../utils/error-message.js";
-import defaultData from "../utils/json-db-default.js";
 
 const userBackups = async (req, res) => {
   const { db } = req.params;
@@ -18,7 +18,7 @@ const createUserBackup = async (db) => {
   await UserJsonBackup.create({
     db,
     write: 1,
-    content: [{ data: defaultData, date: new Date() }],
+    content: [{ data: DEFAULT_JSON_DB, date: new Date() }],
   });
 };
 
@@ -45,8 +45,6 @@ const getUserBackupByDate = async (req, res) => {
   if (selected) res.json(selected);
   else res.status(404).json(errorMessage(ERROR_MESSAGES.DATE_NOT_FOUND));
 };
-
-const MAX_BACKOUP_COUNT = 4;
 
 const updateUserBackup = async (db, data) => {
   const userBackup = await UserJsonBackup.findOne({ db });

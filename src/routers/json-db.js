@@ -8,34 +8,37 @@ import {
   clearJsonDB,
   postKeyOfJsonDB,
   putKeyOfJsonDB,
+  revokeUserDBToken,
 } from "../controllers/json-db.js";
 import DBIsExist from "../middlewares/db-is-exist.js";
 import asyncHandler from "../utils/async-handler.js";
+import isAuth from "../middlewares/is-auth.js";
 
 const jsonDBRouter = express.Router();
 
 jsonDBRouter.post("/", asyncHandler(createJsonDB));
-jsonDBRouter.put("/:db", asyncHandler(DBIsExist), asyncHandler(editJsonDB));
-jsonDBRouter.get("/:db", asyncHandler(DBIsExist), asyncHandler(readJsonDB));
-jsonDBRouter.delete("/:db", asyncHandler(DBIsExist), asyncHandler(clearJsonDB));
+jsonDBRouter.put("/", asyncHandler(DBIsExist), asyncHandler(editJsonDB));
+jsonDBRouter.get("/", asyncHandler(DBIsExist), asyncHandler(readJsonDB));
+jsonDBRouter.delete("/", asyncHandler(DBIsExist), asyncHandler(clearJsonDB));
+jsonDBRouter.post("/revoke-token", isAuth, revokeUserDBToken);
 jsonDBRouter.get(
-  "/:db/:key",
+  "/:key",
   asyncHandler(DBIsExist),
   asyncHandler(getKeyOfJsonDB)
 );
 jsonDBRouter.delete(
-  "/:db/:key",
+  "/:key",
   asyncHandler(DBIsExist),
   asyncHandler(deleteKeyOfJsonDB)
 );
 jsonDBRouter.post(
-  "/:db/:key",
+  "/:key",
   asyncHandler(DBIsExist),
   asyncHandler(postKeyOfJsonDB)
 );
 
 jsonDBRouter.put(
-  "/:db/:key",
+  "/:key",
   asyncHandler(DBIsExist),
   asyncHandler(putKeyOfJsonDB)
 );

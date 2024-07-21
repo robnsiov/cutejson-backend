@@ -7,7 +7,7 @@ import DBIsExist from "../middlewares/db-is-exist.js";
 
 const userJsonBackupRouter = express.Router();
 
-userJsonBackupRouter.get("/:db", DBIsExist, userBackups);
-userJsonBackupRouter.get("/:db/:date", DBIsExist, getUserBackupByDate);
+userJsonBackupRouter.get("/", DBIsExist, userBackups);
+userJsonBackupRouter.get("/:date", DBIsExist, getUserBackupByDate);
 
 export default userJsonBackupRouter;
