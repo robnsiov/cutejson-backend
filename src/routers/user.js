@@ -13,11 +13,7 @@ const userRouter = express.Router();
 
 userRouter.get("/", userInfo);
 
-userRouter.post(
-  "/register/:db",
-  asyncHandler(DBIsExist),
-  asyncHandler(userSignup)
-);
+userRouter.post("/register", asyncHandler(DBIsExist), asyncHandler(userSignup));
 
 userRouter.post("/login", asyncHandler(userSignin));
 
