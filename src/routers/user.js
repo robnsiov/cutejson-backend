@@ -8,10 +8,11 @@ import {
   userSignup,
 } from "../controllers/user.js";
 import DBIsExist from "../middlewares/db-is-exist.js";
+import isAuth from "../middlewares/is-auth.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", userInfo);
+userRouter.get("/", isAuth, userInfo);
 
 userRouter.post("/register", asyncHandler(DBIsExist), asyncHandler(userSignup));
 

@@ -121,28 +121,7 @@ const userForgotPassConfirmation = async (req, res, next) => {
 };
 
 const userInfo = (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader)
-    return res.status(401).json(errorMessage(ERROR_MESSAGES.TOKEN_NOT_FOUND));
-
-  if (!authHeader.startsWith(authHeader))
-    return res
-      .status(400)
-      .json(errorMessage(ERROR_MESSAGES.USE_BEARER_IN_TOKEN));
-  const token = authHeader.split(" ")[1];
-  if (token == null)
-    return res.status(401).json(errorMessage(ERROR_MESSAGES.TOKEN_NOT_FOUND));
-
-  jwt.verify(token, process.env.TOKEN_SECRET, async (err, jwtUser) => {
-    if (err)
-      return res
-        .status(403)
-        .json(errorMessage(ERROR_MESSAGES.EXPIRED_OR_INVALID_TOKEN));
-
-    const user = await User.findOne({ _id: jwtUser.id });
-    if (user) return res.json({ db: user.db, email: user.email });
-    return res.status(400).json(errorMessage(ERROR_MESSAGES.USER_NOT_FOUND));
-  });
+  res.json({ email: req.user.email, db: req.user.db });
 };
 
 export {
