@@ -9,8 +9,10 @@ import { MAX_BODY_SIZE } from "./constants/index.js";
 import googleRouter from "./routers/google.js";
 import githubRouter from "./routers/github.js";
 import mongoSanitize from "express-mongo-sanitize";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
 const flexibleBodyParser = (req, res, next) => {
   let data = "";
