@@ -1,4 +1,4 @@
-import ERROR_MESSAGES from "../../constants/errors.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
 import User from "../models/user.js";
 import errorMessage from "../utils/error-message.js";
 

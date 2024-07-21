@@ -6,8 +6,8 @@ import lodash from "lodash";
 import { createUserBackup, updateUserBackup } from "./user-json-backup.js";
 import filterByQuery from "../utils/filter-by-query.js";
 import { deleteProperty } from "dot-prop";
-import ERROR_MESSAGES from "../../constants/errors.js";
-import { DEFAULT_JSON_DB } from "../../constants/index.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
+import { DEFAULT_JSON_DB } from ".././constants/index.js";
 
 const createJsonDB = async (req, res) => {
   const randomNumer = createRandomString(36);

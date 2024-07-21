@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import errorMessage from "../utils/error-message.js";
-import ERROR_MESSAGES from "../../constants/errors.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
 
 const createFakeData = (req, res) => {
   const { repeat } = req.query;

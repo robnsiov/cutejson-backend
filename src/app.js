@@ -4,9 +4,10 @@ import errorMessage from "./utils/error-message.js";
 import jsonDBRouter from "./routers/json-db.js";
 import userJsonBackupRouter from "./routers/user-json-backup.js";
 import fakerRouter from "./routers/faker.js";
-import ERROR_MESSAGES from "../constants/errors.js";
-import { MAX_BODY_SIZE } from "../constants/index.js";
+import ERROR_MESSAGES from "./constants/errors.js";
+import { MAX_BODY_SIZE } from "./constants/index.js";
 import googleRouter from "./routers/google.js";
+import githubRouter from "./routers/github.js";
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/db", jsonDBRouter);
 app.use("/backup", userJsonBackupRouter);
 app.use("/faker", fakerRouter);
 app.use("/auth/google", googleRouter);
+app.use("/auth/github", githubRouter);
 
 app.use((err, req, res, next) => {
   return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));

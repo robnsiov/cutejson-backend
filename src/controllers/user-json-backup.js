@@ -1,5 +1,5 @@
-import ERROR_MESSAGES from "../../constants/errors.js";
-import { DEFAULT_JSON_DB, MAX_BACKOUP_COUNT } from "../../constants/index.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
+import { DEFAULT_JSON_DB, MAX_BACKOUP_COUNT } from ".././constants/index.js";
 import UserJsonBackup from "../models/user-json-backup.js";
 import errorMessage from "../utils/error-message.js";
 

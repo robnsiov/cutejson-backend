@@ -10,7 +10,7 @@ import errorMessage from "../utils/error-message.js";
 
 import User from "../models/user.js";
 import createRandomString from "../utils/random-string.js";
-import ERROR_MESSAGES from "../../constants/errors.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
 
 const userSignup = async (req, res, next) => {
   const { email, password } = req.body;

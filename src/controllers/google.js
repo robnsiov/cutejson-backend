@@ -1,8 +1,8 @@
 import axios from "axios";
-import { GOOGLE_REDIRECT_URL } from "../../constants/index.js";
+import { GOOGLE_REDIRECT_URL } from ".././constants/index.js";
 import User from "../models/user.js";
 import errorMessage from "../utils/error-message.js";
-import ERROR_MESSAGES from "../../constants/errors.js";
+import ERROR_MESSAGES from ".././constants/errors.js";
 import jwt from "jsonwebtoken";
 
 const googleAuth = (req, res) => {
