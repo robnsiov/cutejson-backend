@@ -10,41 +10,10 @@ import googleRouter from "./routers/google.js";
 import githubRouter from "./routers/github.js";
 import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
+import flexibleBodyParser from "./middlewares/body-parser.js";
 
 const app = express();
 app.use(cors());
-
-const flexibleBodyParser = (req, res, next) => {
-  let data = "";
-  let dataSize = 0;
-
-  req.on("data", (chunk) => {
-    dataSize += chunk.length;
-    if (dataSize > MAX_BODY_SIZE) {
-      res.status(413).send("Payload Too Large");
-      req.connection.destroy();
-      return;
-    }
-    data += chunk;
-  });
-
-  req.on("end", () => {
-    if (data) {
-      try {
-        req.body = JSON.parse(data);
-      } catch (e) {
-        if (data === "null") {
-          req.body = null;
-        } else if (!isNaN(data)) {
-          req.body = Number(data);
-        } else {
-          return res.status(400).send("Invalid data format");
-        }
-      }
-    }
-    next();
-  });
-};
 
 app.use(flexibleBodyParser);
 app.use(mongoSanitize());
