@@ -8,6 +8,7 @@ import ERROR_MESSAGES from "./constants/errors.js";
 import { MAX_BODY_SIZE } from "./constants/index.js";
 import googleRouter from "./routers/google.js";
 import githubRouter from "./routers/github.js";
+import mongoSanitize from "express-mongo-sanitize";
 
 const app = express();
 
@@ -44,6 +45,7 @@ const flexibleBodyParser = (req, res, next) => {
 };
 
 app.use(flexibleBodyParser);
+app.use(mongoSanitize());
 
 app.use("/user", userRouter);
 app.use("/db", jsonDBRouter);
