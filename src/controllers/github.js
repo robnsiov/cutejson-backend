@@ -47,7 +47,10 @@ const githubAuthSuccess = async (req, res) => {
       const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
         expiresIn: process.env.JWT_EXPIRES,
       });
-      return res.status(200).json({ token: token, db: user.db });
+      res.redirect(
+        `http://127.0.0.1:3000/auth/finalize?email=${email}&token=${token}&db=${user.db}`
+      );
+      // return res.status(200).json({ token: token, db: user.db });
     } else {
       const usr = await User.findOne({ db: state });
       if (usr) {
@@ -56,7 +59,10 @@ const githubAuthSuccess = async (req, res) => {
         });
         usr.email = email;
         await usr.save();
-        return res.status(201).json({ email, token: token });
+        res.redirect(
+          `http://127.0.0.1:3000/auth/finalize?email=${email}&token=${token}&db=${user.db}`
+        );
+        // return res.status(201).json({ email, token: token });
       } else {
         return res
           .status(404)
@@ -64,7 +70,10 @@ const githubAuthSuccess = async (req, res) => {
       }
     }
   } catch (err) {
-    return res.status(401).send(errorMessage(ERROR_MESSAGES.AUTH_FAILED));
+    res.redirect(
+      `http://127.0.0.1:3000/auth/finalize?error=${ERROR_MESSAGES.AUTH_FAILED}`
+    );
+    // return res.status(401).send(errorMessage(ERROR_MESSAGES.AUTH_FAILED));
   }
 };
 

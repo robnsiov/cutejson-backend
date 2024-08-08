@@ -26,7 +26,7 @@ const userSignup = async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
       expiresIn: process.env.JWT_EXPIRES,
     });
-    res.status(201).json({ email: body.email, token: token });
+    res.status(201).json({ email: body.email, token: token, db: user.db });
   } catch (err) {
     if (err.issues) res.status(400).json(errorMessage(err.issues));
     else next(err);
@@ -48,7 +48,9 @@ const userSignin = async (req, res, next) => {
         const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
           expiresIn: process.env.JWT_EXPIRES,
         });
-        return res.status(200).json({ token: token, db: user.db });
+        return res
+          .status(200)
+          .json({ token: token, db: user.db, email: user.email });
       } else {
         return res
           .status(401)
@@ -71,7 +73,8 @@ const userForgotPass = async (req, res, next) => {
     const data = await userForgotPassValidation.parseAsync({ email });
     const user = await User.findOne({ email: data.email });
     if (!user)
-      return res.status(400).json(errorMessage(ERROR_MESSAGES.USER_NOT_FOUND));
+      return res.json({ message: "Confirmation email has been sent." });
+    // return res.status(400).json(errorMessage(ERROR_MESSAGES.USER_NOT_FOUND));
     user.forgotPass = createRandomString(36);
     const now = new Date();
     user.forgotPassexpiration = new Date(now.getTime() + 5 * 60000);
@@ -95,7 +98,8 @@ const userForgotPassConfirmation = async (req, res, next) => {
     const user = await User.findOne({ forgotPass: data.recoveryString });
 
     if (!user)
-      return res.status(400).json(errorMessage(ERROR_MESSAGES.USER_NOT_FOUND));
+      return res.status(400).json(errorMessage(ERROR_MESSAGES.EXPIRED_REQUEST));
+    // return res.status(400).json(errorMessage(ERROR_MESSAGES.USER_NOT_FOUND));
 
     const now = new Date();
     if (
@@ -113,7 +117,7 @@ const userForgotPassConfirmation = async (req, res, next) => {
     user.forgotPass = null;
     user.forgotPassexpiration = null;
     await user.save();
-    res.json({});
+    res.json({ message: "Your password has changed" });
   } catch (err) {
     if (err.issues) res.status(400).json(errorMessage(err.issues));
     else next(err);

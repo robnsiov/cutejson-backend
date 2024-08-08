@@ -46,8 +46,14 @@ const clearJsonDB = async (req, res) => {
 const getKeyOfJsonDB = async (req, res) => {
   const { key } = req.params;
   const user = req.user;
+  if (!(key in user.json))
+    return res
+      .status(404)
+      .json(errorMessage(`/${key} ${ERROR_MESSAGES.ITEM_NOT_FOUND}`));
+
   const data = user.json[key];
   const queryStatus = filterByQuery(data, req.query);
+
   if (queryStatus.status === "return data") res.json(data);
   else if (queryStatus.status === "return filtered")
     res.json(queryStatus.filtered);
@@ -59,6 +65,12 @@ const getKeyOfJsonDB = async (req, res) => {
 const deleteKeyOfJsonDB = async (req, res) => {
   const user = req.user;
   const { key } = req.params;
+
+  if (!(key in user.json))
+    return res
+      .status(404)
+      .json(errorMessage(`/${key} ${ERROR_MESSAGES.ITEM_NOT_FOUND}`));
+
   const json = lodash.cloneDeep(user.json);
 
   const removeKey = async () => {
@@ -123,7 +135,7 @@ const postKeyOfJsonDB = async (req, res) => {
   user.json = json;
   await user.save();
   await updateUserBackup(req.params.db, json);
-  res.status(201).json(json);
+  res.status(201).json(json[key]);
   // if key was undifiend => create a key with data
   // if body was aaray => push data in body
   // if replace=true => put data in value of key
@@ -133,13 +145,18 @@ const putKeyOfJsonDB = async (req, res) => {
   const user = req.user;
   const { key } = req.params;
 
+  if (!(key in user.json))
+    return res
+      .status(404)
+      .json(errorMessage(`/${key} ${ERROR_MESSAGES.ITEM_NOT_FOUND}`));
+
   const json = lodash.cloneDeep(user.json);
 
   const updateKey = async () => {
     user.json = json;
     await user.save();
     await updateUserBackup(req.params.db, json);
-    res.status(201).json(json);
+    res.status(201).json(json[key]);
   };
 
   if (key in json) {
