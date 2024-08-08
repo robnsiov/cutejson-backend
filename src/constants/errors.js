@@ -16,6 +16,7 @@ const ERROR_MESSAGES = {
   USE_BEARER_IN_TOKEN: "Use Bearer in first of the token!",
   AUTH_FAILED: "Authentication failed",
   PUT_JSON_KEY_IN_HEADER: "Put your json token in the header!",
+  ITEM_NOT_FOUND: "not found!",
 };
 
 export default ERROR_MESSAGES;

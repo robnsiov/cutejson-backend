@@ -14,9 +14,9 @@ const userRouter = express.Router();
 
 userRouter.get("/", isAuth, userInfo);
 
-userRouter.post("/register", asyncHandler(DBIsExist), asyncHandler(userSignup));
+userRouter.post("/signup", asyncHandler(DBIsExist), asyncHandler(userSignup));
 
-userRouter.post("/login", asyncHandler(userSignin));
+userRouter.post("/signin", asyncHandler(userSignin));
 
 userRouter.post("/forgot-pass", asyncHandler(userForgotPass));
 
