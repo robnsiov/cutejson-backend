@@ -4,6 +4,7 @@ import User from "../models/user.js";
 import errorMessage from "../utils/error-message.js";
 import ERROR_MESSAGES from ".././constants/errors.js";
 import jwt from "jsonwebtoken";
+import createRandomString from "../utils/random-string.js";
 
 const googleAuth = (req, res) => {
   const { db } = req.query;
@@ -40,25 +41,20 @@ const googleAuthCallback = async (req, res) => {
     const email = userInfoResponse.data.email;
     const user = await User.findOne({ email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES,
-      });
-      res.redirect(
-        `http://127.0.0.1:3000/auth/finalize?email=${email}&token=${token}&db=${user.db}`
-      );
-      // return res.status(200).json({ token: token, db: user.db });
+      const code = createRandomString(32);
+      user.forgotPass = code;
+      user.forgotPassexpiration = new Date(now.getTime() + 15 * 1000);
+      await user.save();
+      res.redirect(`http://127.0.0.1:3000/auth/finalize?code=${code}`);
     } else {
       const usr = await User.findOne({ db: state });
       if (usr) {
-        const token = jwt.sign({ id: usr._id }, process.env.TOKEN_SECRET, {
-          expiresIn: process.env.JWT_EXPIRES,
-        });
         usr.email = email;
+        const code = createRandomString(32);
+        usr.forgotPass = code;
+        usr.forgotPassexpiration = new Date(now.getTime() + 15 * 1000);
         await usr.save();
-        res.redirect(
-          `http://127.0.0.1:3000/auth/finalize?email=${email}&token=${token}&db=${user.db}`
-        );
-        // return res.status(201).json({ email, token: token });
+        res.redirect(`http://127.0.0.1:3000/auth/finalize?code=${code}`);
       } else {
         return res
           .status(404)

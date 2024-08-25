@@ -1,6 +1,7 @@
 import express from "express";
 import asyncHandler from "../utils/async-handler.js";
 import {
+  confirmSocialAuth,
   userForgotPass,
   userForgotPassConfirmation,
   userInfo,
@@ -24,5 +25,6 @@ userRouter.post(
   "/forgot-pass/confirmation",
   asyncHandler(userForgotPassConfirmation)
 );
+userRouter.post("/social-auth/confirmation", asyncHandler(confirmSocialAuth));
 
 export default userRouter;
