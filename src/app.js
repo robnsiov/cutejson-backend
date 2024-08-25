@@ -11,9 +11,13 @@ import githubRouter from "./routers/github.js";
 import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 import flexibleBodyParser from "./middlewares/body-parser.js";
+import contactUsRouter from "./routers/contact-us.js";
+import fileUpload from "express-fileupload";
 
 const app = express();
+
 app.use(cors());
+app.use(fileUpload());
 
 app.use(flexibleBodyParser);
 app.use(mongoSanitize());
@@ -24,6 +28,7 @@ app.use("/backup", userJsonBackupRouter);
 app.use("/faker", fakerRouter);
 app.use("/auth/google", googleRouter);
 app.use("/auth/github", githubRouter);
+app.use("/contact-us", contactUsRouter);
 
 app.use((err, req, res, next) => {
   return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));

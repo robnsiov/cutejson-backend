@@ -13,6 +13,10 @@ const userSigninValidation = z.object({
 const userForgotPassValidation = z.object({
   email: z.string().email(),
 });
+const contactUsValidation = z.object({
+  email: z.string().email(),
+  message: z.string().min(5).max(6500),
+});
 
 const userForgotPassConfirmationValidation = z
   .object({
@@ -34,4 +38,5 @@ export {
   userSigninValidation,
   userForgotPassValidation,
   userForgotPassConfirmationValidation,
+  contactUsValidation,
 };
