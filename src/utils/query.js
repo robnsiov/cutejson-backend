@@ -90,6 +90,7 @@ class Query {
     return this;
   }
   contains(value, q) {
+    // string
     if (q) this.query = q;
     this.filtered = this.filtered.filter((item) =>
       getProperty(item, this.query).includes(value)
