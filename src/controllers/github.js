@@ -4,11 +4,12 @@ import ERROR_MESSAGES from ".././constants/errors.js";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import createRandomString from "../utils/random-string.js";
+import { FRONT_BASE_URL, GITHUB_URL } from "../constants/index.js";
 
 const githubAuth = (req, res) => {
   const { db } = req.query;
   res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=${
+    `${GITHUB_URL}/login/oauth/authorize?client_id=${
       process.env.GITHUB_CLIENT_ID
     }&state=${db ?? "none"}`
   );
@@ -19,7 +20,7 @@ const githuAuthCallback = async (req, res) => {
   try {
     const response = await axios({
       method: "post",
-      url: `https://github.com/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}`,
+      url: `${GITHUB_URL}/login/oauth/access_token?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}&code=${code}`,
       headers: {
         accept: "application/json",
       },
@@ -37,7 +38,7 @@ const githubAuthSuccess = async (req, res) => {
   try {
     const response = await axios({
       method: "get",
-      url: `https://api.github.com/user`,
+      url: `${GITHUB_URL}/user`,
       headers: {
         Authorization: `token ${access}`,
       },
@@ -49,7 +50,7 @@ const githubAuthSuccess = async (req, res) => {
       user.forgotPass = code;
       user.forgotPassexpiration = new Date(now.getTime() + 15 * 1000);
       await user.save();
-      res.redirect(`http://127.0.0.1:3000/auth/finalize?code=${code}`);
+      res.redirect(`${FRONT_BASE_URL}/auth/finalize?code=${code}`);
     } else {
       const usr = await User.findOne({ db: state });
       if (usr) {
@@ -58,7 +59,7 @@ const githubAuthSuccess = async (req, res) => {
         usr.forgotPass = code;
         usr.forgotPassexpiration = new Date(now.getTime() + 15 * 1000);
         await usr.save();
-        res.redirect(`http://127.0.0.1:3000/auth/finalize?code=${code}`);
+        res.redirect(`${FRONT_BASE_URL}/auth/finalize?code=${code}`);
       } else {
         return res
           .status(404)
@@ -67,7 +68,7 @@ const githubAuthSuccess = async (req, res) => {
     }
   } catch (err) {
     res.redirect(
-      `http://127.0.0.1:3000/auth/finalize?error=${ERROR_MESSAGES.AUTH_FAILED}`
+      `${FRONT_BASE_URL}/auth/finalize?error=${ERROR_MESSAGES.AUTH_FAILED}`
     );
     // return res.status(401).send(errorMessage(ERROR_MESSAGES.AUTH_FAILED));
   }
