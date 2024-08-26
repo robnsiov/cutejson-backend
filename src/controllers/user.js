@@ -86,6 +86,33 @@ const userForgotPass = async (req, res, next) => {
     else next(err);
   }
 };
+const confirmSocialAuth = async (req, res) => {
+  const { code } = req.body;
+  const user = await User.findOne({ forgotPass: code });
+  if (!user)
+    return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));
+  const now = new Date();
+  if (
+    user.forgotPassexpiration &&
+    now.getTime() > user.forgotPassexpiration.getTime()
+  ) {
+    user.forgotPass = null;
+    user.forgotPassexpiration = null;
+    await user.save();
+    return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));
+  } else {
+    user.password = hash;
+    user.forgotPass = null;
+    user.forgotPassexpiration = null;
+    await user.save();
+    const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES,
+    });
+    return res
+      .status(200)
+      .json({ token: token, db: user.db, email: user.email });
+  }
+};
 
 const userForgotPassConfirmation = async (req, res, next) => {
   const { recoveryString, password, confirmPassword } = req.body;
@@ -134,4 +161,5 @@ export {
   userForgotPass,
   userForgotPassConfirmation,
   userInfo,
+  confirmSocialAuth,
 };
