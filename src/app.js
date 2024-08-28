@@ -13,6 +13,7 @@ import cors from "cors";
 import flexibleBodyParser from "./middlewares/body-parser.js";
 import contactUsRouter from "./routers/contact-us.js";
 import fileUpload from "express-fileupload";
+import aboutMeRouter from "./routers/about-me.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/faker", fakerRouter);
 app.use("/auth/google", googleRouter);
 app.use("/auth/github", githubRouter);
 app.use("/contact-us", contactUsRouter);
+app.use("/about-me", aboutMeRouter);
 
 app.use((err, req, res, next) => {
   return res.status(400).json(errorMessage(ERROR_MESSAGES.BAD_REQUEST));
