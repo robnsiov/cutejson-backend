@@ -18,6 +18,13 @@ const contactUsValidation = z.object({
   message: z.string().min(5).max(6500),
 });
 
+const AboutMeInsertLike = z.object({
+  db: z.string(),
+});
+const AboutMeGetLike = z.object({
+  db: z.string(),
+});
+
 const userForgotPassConfirmationValidation = z
   .object({
     recoveryString: z.string().length(36),
@@ -39,4 +46,6 @@ export {
   userForgotPassValidation,
   userForgotPassConfirmationValidation,
   contactUsValidation,
+  AboutMeInsertLike,
+  AboutMeGetLike,
 };
