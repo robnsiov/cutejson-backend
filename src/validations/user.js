@@ -21,6 +21,9 @@ const contactUsValidation = z.object({
 const AboutMeInsertLike = z.object({
   db: z.string(),
 });
+const AboutMeGetLike = z.object({
+  db: z.string(),
+});
 
 const userForgotPassConfirmationValidation = z
   .object({
@@ -44,4 +47,5 @@ export {
   userForgotPassConfirmationValidation,
   contactUsValidation,
   AboutMeInsertLike,
+  AboutMeGetLike,
 };

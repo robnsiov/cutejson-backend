@@ -6,7 +6,7 @@ import {
 
 const aboutMeRouter = express.Router();
 
-aboutMeRouter.post("/", aboutMeInsertLike);
-aboutMeRouter.get("/", aboutMeLikesCount);
+aboutMeRouter.post("/like", aboutMeInsertLike);
+aboutMeRouter.get("/likes", aboutMeLikesCount);
 
 export default aboutMeRouter;
