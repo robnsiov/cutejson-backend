@@ -7,6 +7,7 @@ const BASE_URL = "http://127.0.0.1:8086";
 const FRONT_BASE_URL = "http://127.0.0.1:3000";
 const GOOGLE_REDIRECT_URL = `${BASE_URL}/auth/google/callback`;
 const GITHUB_URL = `https://github.com`;
+const GITHUB_API_URL = `https://api.github.com`;
 const GOOGLE_URL = `https://accounts.google.com`;
 const GOOGLE_APIS = `https://oauth2.googleapis.com`;
 const GOOGLE_API = `https://www.googleapis.com`;
@@ -21,4 +22,5 @@ export {
   GOOGLE_URL,
   GOOGLE_APIS,
   GOOGLE_API,
+  GITHUB_API_URL,
 };

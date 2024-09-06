@@ -4,7 +4,11 @@ import ERROR_MESSAGES from ".././constants/errors.js";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import createRandomString from "../utils/random-string.js";
-import { FRONT_BASE_URL, GITHUB_URL } from "../constants/index.js";
+import {
+  FRONT_BASE_URL,
+  GITHUB_API_URL,
+  GITHUB_URL,
+} from "../constants/index.js";
 
 const githubAuth = (req, res) => {
   const { db } = req.query;
@@ -38,7 +42,7 @@ const githubAuthSuccess = async (req, res) => {
   try {
     const response = await axios({
       method: "get",
-      url: `${GITHUB_URL}/user`,
+      url: `${GITHUB_API_URL}/user`,
       headers: {
         Authorization: `token ${access}`,
       },
