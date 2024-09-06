@@ -4,8 +4,10 @@ import sortOn from "sort-on";
 class Query {
   query = null;
   filtered = [];
-  constructor(array, query) {
-    this.filtered = array;
+  json = null;
+  constructor(json, key, query) {
+    this.json = json;
+    this.filtered = json[key];
     this.query = query;
   }
   startsWith(value, q) {
@@ -126,19 +128,36 @@ class Query {
     });
     return this;
   }
-  populate(q, table, nextQ) {
+  populate(table, nextQ, q) {
     if (q) this.query = q;
     this.filtered.forEach((item) => {
       const prp = getProperty(item, this.query);
-      if (!prp) setProperty(item, this.query, null);
-      const hasSeted = table.some((row) => {
-        const nextPrp = getProperty(row, nextQ);
-        if (nextPrp == prp) {
-          setProperty(item, this.query, row);
-          return true;
-        } else return false;
+      if (Array.isArray(prp)) {
+        prp.forEach((p) => {
+          this.json[table].forEach((t) => {
+            if (getProperty(t, nextQ) === p) {
+              const res = getProperty(item, this.query);
+              if (Array.isArray(res)) {
+                res.push(t);
+              } else {
+                res = [];
+                res.push(t);
+              }
+              setProperty(item, this.query, res);
+            }
+          });
+        });
+      }
+    });
+    this.filtered.forEach((r) => {
+      const res = getProperty(r, this.query);
+      let p = [];
+      res.forEach((r) => {
+        if (typeof r === "object") {
+          p.push(r);
+        }
       });
-      if (!hasSeted) setProperty(item, this.query, null);
+      setProperty(r, this.query, p);
     });
     return this;
   }

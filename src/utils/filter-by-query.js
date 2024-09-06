@@ -2,7 +2,8 @@ import lodash from "lodash";
 import getClassMethods from "./class-methods.js";
 import Query from "./query.js";
 
-const filterByQuery = (data, qu) => {
+const filterByQuery = (json, key, qu) => {
+  const data = json[key];
   let status = "";
   let error = "";
   let filtered = null;
@@ -29,7 +30,7 @@ const filterByQuery = (data, qu) => {
         status = "return error";
         error = `${invalidMethod} is not a valid params!`;
       } else {
-        const q = new Query(data, querKey);
+        const q = new Query(json, key, querKey);
         try {
           Object.entries(parsedQuery).forEach(([key, value]) => {
             if (key === "noSelect") {

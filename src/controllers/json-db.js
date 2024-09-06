@@ -52,7 +52,7 @@ const getKeyOfJsonDB = async (req, res) => {
       .json(errorMessage(`/${key} ${ERROR_MESSAGES.ITEM_NOT_FOUND}`));
 
   const data = user.json[key];
-  const queryStatus = filterByQuery(data, req.query);
+  const queryStatus = filterByQuery(user.json, key, req.query);
 
   if (queryStatus.status === "return data") res.json(data);
   else if (queryStatus.status === "return filtered")
@@ -90,7 +90,7 @@ const deleteKeyOfJsonDB = async (req, res) => {
       if (lodash.isEmpty(req.query)) {
         await removeKey();
       } else {
-        const queryStatus = filterByQuery(json[key], req.query);
+        const queryStatus = filterByQuery(json, key, req.query);
         if (queryStatus.status === "return data") {
           res.json(null);
         } else if (queryStatus.status === "return filtered") {
@@ -164,7 +164,7 @@ const putKeyOfJsonDB = async (req, res) => {
       if (lodash.isEmpty(req.query)) {
         await updateKey();
       } else {
-        const queryStatus = filterByQuery(json[key], req.query);
+        const queryStatus = filterByQuery(json, key, req.query);
         if (queryStatus.status === "return data") {
           res.status(201).json(json);
         } else if (queryStatus.status === "return filtered") {
