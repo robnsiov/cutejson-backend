@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const contactUs = new mongoose.Schema(
+const contactMe = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -15,6 +15,6 @@ const contactUs = new mongoose.Schema(
   { versionKey: false, timestamps: true }
 );
 
-const ContactUs = mongoose.model("ContactUs", contactUs);
+const ContactMe = mongoose.model("ContactMe", contactMe);
 
-export default ContactUs;
+export default ContactMe;

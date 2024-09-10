@@ -1,7 +1,7 @@
 import errorMessage from "../utils/error-message.js";
-import ERROR_MESSAGES from ".././constants/errors.js";
-import ContactUs from "../models/contact-us.js";
-import { contactUsValidation } from "../validations/user.js";
+import ERROR_MESSAGES from "../constants/errors.js";
+import ContactMe from "../models/contact-me.js";
+import { contactMeValidation } from "../validations/user.js";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import dotenv from "dotenv";
 import createRandomString from "../utils/random-string.js";
@@ -16,7 +16,7 @@ const client = new S3Client({
   },
 });
 
-const contactUs = async (req, res) => {
+const contactMe = async (req, res) => {
   const uploadFile = async (file) => {
     const name = `${createRandomString(10)}-${file.name}`;
     const params = {
@@ -30,7 +30,7 @@ const contactUs = async (req, res) => {
 
   try {
     const { email, message } = req.body;
-    const data = await contactUsValidation.parseAsync({ email, message });
+    const data = await contactMeValidation.parseAsync({ email, message });
 
     let uploadedFiles = [];
     if (req.files && req.files.file) {
@@ -42,7 +42,7 @@ const contactUs = async (req, res) => {
       }
     }
 
-    await ContactUs.create({ email, message, files: uploadedFiles });
+    await ContactMe.create({ email, message, files: uploadedFiles });
 
     return res.json({
       message: "Contact message sent successfully.",
@@ -54,4 +54,4 @@ const contactUs = async (req, res) => {
   }
 };
 
-export default contactUs;
+export default contactMe;

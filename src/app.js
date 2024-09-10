@@ -11,7 +11,7 @@ import githubRouter from "./routers/github.js";
 import mongoSanitize from "express-mongo-sanitize";
 import cors from "cors";
 import flexibleBodyParser from "./middlewares/body-parser.js";
-import contactUsRouter from "./routers/contact-us.js";
+import contactMeRouter from "./routers/contact-me.js";
 import fileUpload from "express-fileupload";
 import aboutMeRouter from "./routers/about-me.js";
 
@@ -29,7 +29,7 @@ app.use("/backup", userJsonBackupRouter);
 app.use("/faker", fakerRouter);
 app.use("/auth/google", googleRouter);
 app.use("/auth/github", githubRouter);
-app.use("/contact-us", contactUsRouter);
+app.use("/contact-me", contactMeRouter);
 app.use("/about-me", aboutMeRouter);
 
 app.use((err, req, res, next) => {
