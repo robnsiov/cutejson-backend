@@ -49,9 +49,9 @@ const githubAuthSuccess = async (req, res) => {
     });
     const email = response.data.email;
     const user = await User.findOne({ email });
+    const now = new Date();
     if (user) {
       const code = createRandomString(32);
-      const now = new Date();
       user.forgotPass = code;
       user.forgotPassexpiration = new Date(now.getTime() + 15 * 1000);
       await user.save();
