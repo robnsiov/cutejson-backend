@@ -46,6 +46,7 @@ const googleAuthCallback = async (req, res) => {
 
     const email = userInfoResponse.data.email;
     const user = await User.findOne({ email });
+    const now = new Date();
     if (user) {
       const code = createRandomString(32);
       user.forgotPass = code;

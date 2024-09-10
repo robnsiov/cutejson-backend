@@ -3,7 +3,7 @@ import express from "express";
 const app = express();
 
 const flexibleBodyParser = (req, res, next) => {
-  if (req.originalUrl === "/contact-us") {
+  if (req.originalUrl === "/contact-me") {
     express.json()(req, res, next);
     // next();
   } else {
