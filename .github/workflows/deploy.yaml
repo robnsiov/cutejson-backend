@@ -26,6 +26,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: linux/arm64
           tags: nimaa77/cutejson-be:latest
       - name: Deploy to Coolify
         run: |
